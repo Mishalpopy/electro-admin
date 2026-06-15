@@ -52,16 +52,26 @@ export default function ProductsPage() {
   }
 
   const handleBulkUpload = async (e) => {
-    const file = e.target.files[0]
-    if (!file) return
+    const selectedFiles = Array.from(e.target.files)
+    if (selectedFiles.length === 0) return
 
     setIsBulkUploading(true)
     const formData = new FormData()
-    formData.append('file', file)
+    selectedFiles.forEach(f => formData.append('files', f))
 
     try {
       const res = await bulkUploadProducts(formData)
-      showToast(res.data.message || 'Bulk upload successful!')
+      const { message, summary } = res.data
+      let toastMsg = message || 'Bulk upload successful!'
+      if (summary) {
+        const missing = summary.fieldsMissing || []
+        if (missing.length > 0) {
+          toastMsg += ` | Not found in file (shown as '-'): ${missing.join(', ')}`
+        } else {
+          toastMsg += ' | All fields matched!'
+        }
+      }
+      showToast(toastMsg)
       load(1)
     } catch (err) {
       showToast(err.response?.data?.message || 'Failed to upload file', 'error')
@@ -204,7 +214,7 @@ export default function ProductsPage() {
               </svg>
             )}
             Bulk Upload
-            <input type="file" className="hidden" accept=".xlsx, .xls, .csv" onChange={handleBulkUpload} disabled={isBulkUploading} />
+            <input type="file" className="hidden" accept=".xlsx,.xls,.csv,.pdf" multiple onChange={handleBulkUpload} disabled={isBulkUploading} />
           </label>
           <button onClick={openAdd} className="btn-primary py-2 px-3 text-sm sm:text-base flex items-center gap-2">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -263,8 +273,8 @@ export default function ProductsPage() {
                       <td className="table-td">
                         <div className="flex items-center gap-3">
                           <img
-                            src={product.image}
-                            onError={(e) => (e.target.src = 'https://placehold.co/40x40/2A2A3C/6C5CE7?text=B')}
+                            src={product.image || 'https://cdn-icons-png.flaticon.com/512/2933/2933245.png'}
+                            onError={(e) => (e.target.src = 'https://cdn-icons-png.flaticon.com/512/2933/2933245.png')}
                             className="w-10 h-10 rounded-lg object-cover bg-dark shrink-0"
                             alt={product.name}
                           />

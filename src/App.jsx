@@ -14,15 +14,19 @@ import VehicleTypesPage from './pages/VehicleTypesPage'
 import VehicleCategoriesPage from './pages/VehicleCategoriesPage'
 import Sidebar from './components/Sidebar'
 
+
+
+
+
+
 function AdminLayout({ onLogout }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
-
   return (
     <div className="flex h-screen overflow-hidden bg-dark">
       {/* Mobile Sidebar Overlay */}
       {sidebarOpen && (
-        <div 
-          className="fixed inset-0 bg-black/60 z-40 lg:hidden" 
+        <div
+          className="fixed inset-0 bg-black/60 z-40 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
@@ -38,7 +42,7 @@ function AdminLayout({ onLogout }) {
       <div className="flex-1 flex flex-col min-w-0">
         {/* Mobile Header */}
         <header className="lg:hidden h-16 border-b border-border bg-surface flex items-center px-4 shrink-0">
-          <button 
+          <button
             onClick={() => setSidebarOpen(true)}
             className="p-2 text-gray-400 hover:text-white transition-colors"
           >

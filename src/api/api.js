@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const api = axios.create({
-  baseURL: 'http://localhost:5001/api', // Switched to localhost for development
+  baseURL: import.meta.env.VITE_API_BASE_URL || 'https://electro-backend-electro-web-frontend.up.railway.app/api',
   headers: { 'Content-Type': 'application/json' },
 })
 

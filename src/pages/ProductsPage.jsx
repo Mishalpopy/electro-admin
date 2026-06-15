@@ -73,6 +73,7 @@ export default function ProductsPage() {
       }
       showToast(toastMsg)
       load(1)
+      getBrands().then(res => setBrands(res.data.data)).catch(err => console.error('Failed to load brands', err))
     } catch (err) {
       showToast(err.response?.data?.message || 'Failed to upload file', 'error')
     } finally {

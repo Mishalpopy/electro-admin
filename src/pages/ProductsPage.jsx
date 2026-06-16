@@ -3,7 +3,7 @@ import { getProducts, getCategories, createProduct, updateProduct, deleteProduct
 import { Modal, ConfirmModal, Toast, Spinner } from '../components/UI'
 
 const defaultIcon = `${getBackendURL()}/icons/eletro-battery-tile-1024.png`
-const empty = { brand: '', name: '', description: '', price: '', stock_status: 'In Stock', image: '', images: '', warranty: '', capacity: '', voltage: '', battery_type: '', ah: '', cca: '', dimensions: '', part_number: '', type: 'battery', is_favorite: false }
+const empty = { brand: '', name: '', description: '', price: '', stock_status: 'In Stock', stock: '', image: '', images: '', warranty: '', capacity: '', voltage: '', battery_type: '', ah: '', cca: '', dimensions: '', part_number: '', type: 'battery', is_favorite: false }
 
 export default function ProductsPage() {
   const [products, setProducts] = useState([])
@@ -149,7 +149,8 @@ export default function ProductsPage() {
       images: p.images ? p.images.join(', ') : '',
       warranty: p.warranty || '',
       capacity: p.capacity || '',
-      voltage: p.voltage || ''
+      voltage: p.voltage || '',
+      stock: p.stock !== undefined ? String(p.stock) : ''
     }); 
     setError(''); 
     setModal('edit'); 
@@ -166,6 +167,7 @@ export default function ProductsPage() {
       const payload = { 
         ...form, 
         price: Number(form.price),
+        stock: form.stock !== '' ? Number(form.stock) : undefined,
         images: form.images ? form.images.split(',').map(s => s.trim()).filter(Boolean) : []
       }
       if (modal === 'add') {
@@ -265,6 +267,7 @@ export default function ProductsPage() {
                     <th className="table-th">Type</th>
                     <th className="table-th">Price</th>
                     <th className="table-th">Stock Status</th>
+                    <th className="table-th">Stock</th>
                     <th className="table-th">In Cart</th>
                     <th className="table-th text-right">Actions</th>
                   </tr>
@@ -295,6 +298,9 @@ export default function ProductsPage() {
                         <span className={`badge ${product.stock_status === 'In Stock' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-red-500/10 text-red-400'}`}>
                           {product.stock_status || 'In Stock'}
                         </span>
+                      </td>
+                      <td className="table-td text-gray-400">
+                        {product.stock !== undefined ? `${product.stock} units` : '-'}
                       </td>
                       <td className="table-td">
                         <span className="badge bg-amber-500/10 text-amber-400">
@@ -404,6 +410,10 @@ export default function ProductsPage() {
                   <option value="In Stock">In Stock</option>
                   <option value="Out of Stock">Out of Stock</option>
                 </select>
+              </div>
+              <div>
+                <label className="label">Stock Quantity</label>
+                <input className="input" type="number" placeholder="e.g. 500" value={form.stock} onChange={(e) => setForm({ ...form, stock: e.target.value })} />
               </div>
               <div>
                 <label className="label">Warranty</label>

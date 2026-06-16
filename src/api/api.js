@@ -5,6 +5,11 @@ const api = axios.create({
   headers: { 'Content-Type': 'application/json' },
 })
 
+export const getBackendURL = () => {
+  const baseURL = import.meta.env.VITE_API_BASE_URL || 'https://electro-backend-electro-web-frontend.up.railway.app/api'
+  return baseURL.replace(/\/api$/, '')
+}
+
 // Token injection
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token')

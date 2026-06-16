@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
-import { getHomeData } from '../api/api'
+import { getHomeData, getBackendURL } from '../api/api'
 import { StatCard, Spinner } from '../components/UI'
+
+const defaultIcon = `${getBackendURL()}/icons/eletro-battery-tile-1024.png`
 
 export default function Dashboard() {
   const [data, setData] = useState(null)
@@ -125,8 +127,8 @@ export default function Dashboard() {
                     <td className="table-td">
                       <div className="flex items-center gap-3">
                         <img
-                          src={item.image}
-                          onError={(e) => (e.target.src = 'https://placehold.co/40x40/2A2A3C/6C5CE7?text=B')}
+                          src={item.image || defaultIcon}
+                          onError={(e) => (e.target.src = defaultIcon)}
                           className="w-9 h-9 rounded-lg object-cover bg-dark"
                           alt={item.name}
                         />

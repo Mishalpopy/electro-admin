@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
-import { getProducts, getCategories, createProduct, updateProduct, deleteProduct, uploadImage, bulkUploadProducts, getBrands } from '../api/api'
+import { getProducts, getCategories, createProduct, updateProduct, deleteProduct, uploadImage, bulkUploadProducts, getBrands, getBackendURL } from '../api/api'
 import { Modal, ConfirmModal, Toast, Spinner } from '../components/UI'
 
+const defaultIcon = `${getBackendURL()}/icons/eletro-battery-tile-1024.png`
 const empty = { brand: '', name: '', description: '', price: '', stock_status: 'In Stock', image: '', images: '', warranty: '', capacity: '', voltage: '', battery_type: '', ah: '', cca: '', dimensions: '', part_number: '', type: 'battery', is_favorite: false }
 
 export default function ProductsPage() {
@@ -274,8 +275,8 @@ export default function ProductsPage() {
                       <td className="table-td">
                         <div className="flex items-center gap-3">
                           <img
-                            src={product.image || 'https://cdn-icons-png.flaticon.com/512/2933/2933245.png'}
-                            onError={(e) => (e.target.src = 'https://cdn-icons-png.flaticon.com/512/2933/2933245.png')}
+                            src={product.image || defaultIcon}
+                            onError={(e) => (e.target.src = defaultIcon)}
                             className="w-10 h-10 rounded-lg object-cover bg-dark shrink-0"
                             alt={product.name}
                           />

@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
-import { getAdminOrders, updateOrderStatus } from '../api/api'
+import { getAdminOrders, updateOrderStatus, getBackendURL } from '../api/api'
 import { Modal, Toast, Spinner } from '../components/UI'
+
+const defaultIcon = `${getBackendURL()}/icons/eletro-battery-tile-1024.png`
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState([])
@@ -201,7 +203,7 @@ export default function OrdersPage() {
                       src={item.product?.image} 
                       className="w-12 h-12 rounded-lg object-contain bg-white/5 p-1"
                       alt=""
-                      onError={(e) => (e.target.src = 'https://placehold.co/48x48/2A2A3C/6C5CE7?text=B')}
+                      onError={(e) => (e.target.src = defaultIcon)}
                     />
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-white truncate">{item.product?.name || 'deleted product'}</p>
